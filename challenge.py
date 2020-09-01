@@ -1,43 +1,43 @@
 import os
-import discord
-import random
+from discord.ext import commands
 from dotenv import load_dotenv
 
 # create discord connection
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
-client = discord.Client()
+bot = commands.Bot(command_prefix='!')
 
 
-@client.event
+@bot.event
 async def on_ready():
-    guild = discord.utils.get(client.guilds, name=GUILD)
-    print("{} has connected to Discord Guild {} (id = {})!".format(client.user, guild.name, guild.id))
-
-    members = "\n".join([member.name for member in guild.members])
-    print("Server Members:\n{}".format(members))
+    print("{} has connected to Discord Guild!".format(bot.user.name))
 
 
-@client.event
-async def on_message(message):
-    if message.content == '-break':
-        raise discord.DiscordException
-    # if bot sent message, do nothing
-    if message.author == client.user:
-        return
+@bot.command(name='hello', help='Says Hello!')
+async def say_hello(ctx):
+    response = "Hello!"
+    await ctx.send(response)
 
-    if message.content == "-get":
-        await message.channel.send("NOT YET IMPLEMENTED")
+# @client.event
+# async def on_message(message):
+#     if message.content == '-break':
+#         raise discord.DiscordException
+#     # if bot sent message, do nothing
+#     if message.author == client.user:
+#         return
+#
+#     if message.content == "-get":
+#         await message.channel.send("NOT YET IMPLEMENTED")
+#
+#
+# @client.event
+# async def on_error(event, *args, **kwargs):
+#     with open('challenge_error.log', 'a') as f:
+#         if event == 'on_message':
+#             f.write('Unhandled message: {}\n'.format(args[0]))
+#         else:
+#             raise
 
 
-@client.event
-async def on_error(event, *args, **kwargs):
-    with open('challenge_error.log', 'a') as f:
-        if event == 'on_message':
-            f.write('Unhandled message: {}\n'.format(args[0]))
-        else:
-            raise
-
-
-client.run(TOKEN)
+bot.run(TOKEN)
