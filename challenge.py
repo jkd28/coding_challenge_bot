@@ -27,10 +27,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    brooklyn_99_quote = "I\'m the human form of the 💯 emoji."
-    if message.content == "-99!":
-        await message.channel.send(brooklyn_99_quote)
-    elif message.content == "-get":
+    if message.content == "-get":
         await message.channel.send("NOT YET IMPLEMENTED")
 
 
